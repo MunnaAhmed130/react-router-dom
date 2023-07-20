@@ -1,0 +1,42 @@
+import {
+  Route,
+  RouterProvider,
+  createBrowserRouter,
+  createRoutesFromElements,
+} from "react-router-dom";
+// import Form from "./Form";
+import Layout from "./Layout";
+import Login, { action as loginAction } from "./Login";
+// import Form from "./Form";
+import "./App.css";
+import Protected, { loader as protectedLoader } from "./Protected";
+import { requireAuth } from "./requireAuth";
+
+const router = createBrowserRouter(
+  createRoutesFromElements(
+    <Route path="/" element={<Layout />}>
+      <Route index element={<h1>Home page</h1>} />
+      <Route path="protected" element={<Protected />} loader={protectedLoader}>
+        <Route
+          path="nested"
+          element={<h1>Nested protected route</h1>}
+          loader={async ({ request }) => {
+            await requireAuth(request);
+            return null;
+          }}
+        />
+      </Route>
+      <Route path="login" element={<Login />} action={loginAction} />
+    </Route>
+  )
+);
+
+function App() {
+  return (
+    <>
+      <RouterProvider router={router} />
+      {/* <Form></Form> */}
+    </>
+  );
+}
+export default App;
