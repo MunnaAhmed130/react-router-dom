@@ -1,5 +1,12 @@
+import { useParams } from "react-router-dom";
+
 const Book = () => {
-  return <div>Book</div>;
+  const { id } = useParams();
+  return (
+    <>
+      <h1>Book {id} </h1>
+    </>
+  );
 };
 
 export default Book;
